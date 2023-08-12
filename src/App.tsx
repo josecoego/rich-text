@@ -1,12 +1,13 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import HtmlToReact from "html-to-react";
+import Subtitle from "./components/Subtitle";
 
 const HtmlToReactParser: any = HtmlToReact.Parser; /**TODO: Change any */
 const htmlToReactParser = new HtmlToReactParser();
 
 function App() {
   const htmlInput =
-    "<div id='test1' class='bg-red'><h1>Title</h1><h2>Subtitle H2</h2><p>A paragraph</p></div>";
+    "<div id='test1' class='bg-red'><h1>Title</h1><h2 component='subtitle'>Subtitle H2</h2><p>A paragraph</p></div>";
   const scriptContent = `console.log('hi')
     var button1 = document.getElementById('test1')
     button1.addEventListener('click', function(){
@@ -28,7 +29,16 @@ function App() {
   ).ProcessNodeDefinitions();
   const processingInstructions = [
     {
-      // Anything else
+      shouldProcessNode: function (node: any) {
+        console.log("Nodeeeee", node.attribs);
+        if (node.attribs?.component === "subtitle") return true;
+        return false;
+      },
+      processNode: function (node: any, children: any) {
+        return <Subtitle text={children} />;
+      },
+    },
+    {
       shouldProcessNode: function (node: any) {
         return true;
       },
