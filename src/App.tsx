@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect } from "react";
 import HtmlToReact from "html-to-react";
 import Subtitle from "./components/Subtitle";
 import CustomComponent from "./components/CutomComponent";
+import LinkNext from "./components/SitecoreCompsNextComps/LinkNext";
 
 const HtmlToReactParser: any = HtmlToReact.Parser; /**TODO: Change any */
 const htmlToReactParser = new HtmlToReactParser();
@@ -10,6 +11,19 @@ const processNodeDefinitions = new (
 ).ProcessNodeDefinitions();
 
 const processingInstructions = [
+  {
+    shouldProcessNode: function (node: any) {
+      return node?.attribs?.component === "LinkNext";
+    },
+    processNode: function (node: any, children: any) {
+      const { href = "", className = "" } = node?.attribs;
+      return (
+        <LinkNext className={className} href={href}>
+          {children}
+        </LinkNext>
+      );
+    },
+  },
   {
     shouldProcessNode: function (node: any) {
       return true;
@@ -21,7 +35,9 @@ const processingInstructions = [
 function App() {
   return (
     <CustomComponent
-      html={"<h1 class='newborder'>Title</h1>"}
+      html={
+        "<div><h1 class='newborder'>Title</h1><a component='LinkNext' href='/'>home</a><div>"
+      }
       plainCss={["h1 {background-color:red}", "h1 {color:white}"]}
       stylesheetLinks={["/assets/newstyles.css"]}
       proccessingInstructions={processingInstructions}
