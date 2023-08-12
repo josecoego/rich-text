@@ -1,12 +1,32 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import HtmlToReact from "html-to-react";
 import Subtitle from "./components/Subtitle";
+import CustomComponent from "./components/CutomComponent";
 
 const HtmlToReactParser: any = HtmlToReact.Parser; /**TODO: Change any */
 const htmlToReactParser = new HtmlToReactParser();
+const processNodeDefinitions = new (
+  HtmlToReact as any
+).ProcessNodeDefinitions();
+
+const processingInstructions = [
+  {
+    shouldProcessNode: function (node: any) {
+      return true;
+    },
+    processNode: processNodeDefinitions.processDefaultNode,
+  },
+];
 
 function App() {
-  const htmlInput =
+  return (
+    <CustomComponent
+      html={"<h1>Title</h1>"}
+      plainCss={["h1 {background-color:red}", "h1 {color:white}"]}
+      proccessingInstructions={processingInstructions}
+    />
+  );
+  /*  const htmlInput =
     "<div id='test1' class='bg-red'><h1>Title</h1><h2 component='subtitle'>Subtitle H2</h2><p>A paragraph</p></div>";
   const scriptContent = `console.log('hi')
     var button1 = document.getElementById('test1')
@@ -62,7 +82,7 @@ function App() {
       {reactElement}
       <button id="test2">Test2</button>
     </div>
-  );
+  ); */
 }
 
 export default App;
