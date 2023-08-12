@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import HtmlToReact from "html-to-react";
 
 const HtmlToReactParser: any = HtmlToReact.Parser; /**TODO: Change any */
@@ -10,12 +10,12 @@ function App() {
   const scriptContent = `console.log('hi')
     var button1 = document.getElementById('test1')
     button1.addEventListener('click', function(){
-       alert('click')
+       console.log('click')
     })
   `;
 
   const reactElement = htmlToReactParser.parse(htmlInput);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const script = document.createElement("script");
     script.innerHTML = scriptContent;
     document.body.appendChild(script);
