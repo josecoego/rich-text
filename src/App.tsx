@@ -21,8 +21,9 @@ const processingInstructions = [
 function App() {
   return (
     <CustomComponent
-      html={"<h1>Title</h1>"}
+      html={"<h1 class='newborder'>Title</h1>"}
       plainCss={["h1 {background-color:red}", "h1 {color:white}"]}
+      stylesheetLinks={["/assets/newstyles.css"]}
       proccessingInstructions={processingInstructions}
     />
   );

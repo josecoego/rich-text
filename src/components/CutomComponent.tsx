@@ -8,7 +8,7 @@ type CustomComponentProps = {
   scriptsUrls?: string[];
   proccessingInstructions?: any[];
   plainCss?: string[];
-  cssUrls?: string[];
+  stylesheetLinks?: string[];
   config?: { isValidNode: boolean };
 };
 
@@ -22,22 +22,38 @@ const CustomComponent = (props: CustomComponentProps): JSX.Element => {
     scriptsUrls,
     proccessingInstructions,
     plainCss,
-    cssUrls,
+    stylesheetLinks,
     config,
   } = props;
   const isValidNode = () => {
     return config?.isValidNode ?? true;
   };
 
-  useLayoutEffect(() => {}, []);
+  useLayoutEffect(() => {
+    //create links to css on head.
+    const linkElements = stylesheetLinks?.map((link) => {
+      const linkElement = document.createElement("link");
+      linkElement.href = link;
+      linkElement.rel = "stylesheet";
+      return linkElement;
+    });
+    linkElements?.forEach((linkElement) => {
+      document.head.appendChild(linkElement);
+    });
+    return () => {
+      linkElements?.forEach((linkElement) => {
+        document.head.removeChild(linkElement);
+      });
+    };
+  }, []);
+
+  if (!html) return <div>NO HTML RECEIVED</div>;
+
   const OutputElment = htmlToReactParser.parseWithInstructions(
     html,
     isValidNode,
     proccessingInstructions
   );
-
-  if (!html) return <div>NO HTML RECEIVED</div>;
-  console.log("plaincssss", plainCss);
 
   return (
     <>
