@@ -5,7 +5,7 @@ import StyleCustomComponent from "./SytleCustomComponent";
 type CustomComponentProps = {
   html: string;
   scriptContents?: string[];
-  scriptsUrls?: string[];
+  scriptLinks?: string[];
   proccessingInstructions?: any[];
   plainCss?: string[];
   stylesheetLinks?: string[];
@@ -19,7 +19,7 @@ const CustomComponent = (props: CustomComponentProps): JSX.Element => {
   const {
     html,
     scriptContents,
-    scriptsUrls,
+    scriptLinks,
     proccessingInstructions,
     plainCss,
     stylesheetLinks,
@@ -46,10 +46,27 @@ const CustomComponent = (props: CustomComponentProps): JSX.Element => {
       });
     };
   }, []);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const scriptElements = scriptContents?.map((content) => {
       const script = document.createElement("script");
       script.innerHTML = content;
+      return script;
+    });
+
+    scriptElements?.forEach((scriptElement) => {
+      document.body.appendChild(scriptElement);
+    });
+
+    return () => {
+      scriptElements?.forEach((scriptElement) => {
+        document.body.removeChild(scriptElement);
+      });
+    };
+  }, []);
+  useLayoutEffect(() => {
+    const scriptElements = scriptLinks?.map((link) => {
+      const script = document.createElement("script");
+      script.src = link;
       return script;
     });
 

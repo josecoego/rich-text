@@ -26,6 +26,7 @@ function App() {
       stylesheetLinks={["/assets/newstyles.css"]}
       proccessingInstructions={processingInstructions}
       scriptContents={["console.log('hi')"]}
+      scriptLinks={["/assets/test.js"]}
     />
   );
   /*  const htmlInput =
