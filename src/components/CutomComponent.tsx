@@ -4,7 +4,7 @@ import StyleCustomComponent from "./SytleCustomComponent";
 
 type CustomComponentProps = {
   html: string;
-  plainJs?: string[];
+  scriptContents?: string[];
   scriptsUrls?: string[];
   proccessingInstructions?: any[];
   plainCss?: string[];
@@ -18,7 +18,7 @@ const htmlToReactParser = new HtmlToReactParser();
 const CustomComponent = (props: CustomComponentProps): JSX.Element => {
   const {
     html,
-    plainJs,
+    scriptContents,
     scriptsUrls,
     proccessingInstructions,
     plainCss,
@@ -46,6 +46,23 @@ const CustomComponent = (props: CustomComponentProps): JSX.Element => {
       });
     };
   }, []);
+  useEffect(() => {
+    const scriptElements = scriptContents?.map((content) => {
+      const script = document.createElement("script");
+      script.innerHTML = content;
+      return script;
+    });
+
+    scriptElements?.forEach((scriptElement) => {
+      document.body.appendChild(scriptElement);
+    });
+
+    return () => {
+      scriptElements?.forEach((scriptElement) => {
+        document.body.removeChild(scriptElement);
+      });
+    };
+  }, []);
 
   if (!html) return <div>NO HTML RECEIVED</div>;
 
@@ -58,8 +75,8 @@ const CustomComponent = (props: CustomComponentProps): JSX.Element => {
   return (
     <>
       {plainCss &&
-        plainCss.map((plcss) => {
-          return <StyleCustomComponent plainStyle={plcss} />;
+        plainCss.map((plcss, index) => {
+          return <StyleCustomComponent key={index} plainStyle={plcss} />;
         })}
       {OutputElment}
     </>

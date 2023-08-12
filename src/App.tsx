@@ -25,6 +25,7 @@ function App() {
       plainCss={["h1 {background-color:red}", "h1 {color:white}"]}
       stylesheetLinks={["/assets/newstyles.css"]}
       proccessingInstructions={processingInstructions}
+      scriptContents={["console.log('hi')"]}
     />
   );
   /*  const htmlInput =
